@@ -1,0 +1,141 @@
+## ===================================================
+## .gitignore cho dự án ASP.NET MVC 5 / Visual Studio
+## ===================================================
+
+# -----------------------------------------------
+# Visual Studio files
+# -----------------------------------------------
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Build output
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# MSTest
+TestResult.xml
+TestResults/
+
+# NuGet packages — restore via NuGet Package Manager
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+!packages/build/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# -----------------------------------------------
+# ASP.NET / .NET Framework
+# -----------------------------------------------
+App_Data/*.mdf
+App_Data/*.ldf
+App_Data/*.sdf
+App_Data/*.log
+
+# Razor compiled views
+*.cshtml.g.cs
+*.vbhtml.g.vb
+
+# Publishing
+*.pubxml
+*.pubxml.user
+PublishScripts/
+publish/
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.vspscc
+*.vssscc
+.builds
+
+# -----------------------------------------------
+# Upload folder — chứa ảnh sản phẩm, không track
+# -----------------------------------------------
+Content/uploads/
+Content/images/products/
+Scripts/uploads/
+
+# -----------------------------------------------
+# Database files — không commit file .mdf / .sql chứa dữ liệu nhạy cảm
+# -----------------------------------------------
+*.mdf
+*.ldf
+*.bak
+*.bcp
+
+# -----------------------------------------------
+# Environment & Secrets — KHÔNG COMMIT
+# -----------------------------------------------
+Web.config.user
+connectionStrings.config
+appSettings.secret.config
+secrets.json
+*.pfx
+*.p12
+*.key
+*.pem
+*.env
+*.env.local
+
+# -----------------------------------------------
+# OS generated files
+# -----------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# -----------------------------------------------
+# JetBrains IDEs (Rider)
+# -----------------------------------------------
+.idea/
+*.sln.iml
+
+# -----------------------------------------------
+# Node / npm (nếu dùng task runner)
+# -----------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# -----------------------------------------------
+# Logs
+# -----------------------------------------------
+*.log
+logs/
