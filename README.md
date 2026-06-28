@@ -18,10 +18,11 @@
 | **Tên đồ án** | Xây dựng Website Bán Sản Phẩm Công Nghệ của Apple |
 | **Sinh viên** | Lê Quốc Văn |
 | **MSSV** | 170125090 |
+| **Điện thoại** | 0988.534.534 |
 | **Lớp** | DK25TTC2 |
 | **Trường** | Trường Đại học Trà Vinh (TVU) |
 | **Môn học** | Lập trình Web / Phát triển Ứng dụng Web |
-| **Giảng viên hướng dẫn** | TS. Nguyễn Nhứt Lam |
+| **Giảng viên hướng dẫn** | antonio86doan@gmail.com |
 | **Thời gian thực hiện** | 22/06/2026 — 01/08/2026 |
 | **Công nghệ chính** | ASP.NET MVC 5, C#, SQL Server, Entity Framework, Bootstrap |
 
