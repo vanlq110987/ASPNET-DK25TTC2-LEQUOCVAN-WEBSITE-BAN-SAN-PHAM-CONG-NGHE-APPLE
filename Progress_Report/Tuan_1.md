@@ -32,7 +32,7 @@
 
 - Sách chuyên ngành lập trình web ASP.NET MVC.
 - Khóa học lập trình **ASP.NET MVC** của TEDU (Tự học IT).
-- Tài liệu chính thức của Microsoft: [docs.microsoft.com/aspnet/mvc](https://docs.microsoft.com/aspnet/mvc).
+- Tài liệu chính thức của Microsoft: [docs.microsoft.com/aspnet/mvc](https://learn.microsoft.com/en-us/aspnet/mvc/).
 - Mã nguồn giao diện **Template Bootstrap SB Admin 2** (StartBootstrap).
 - Tài liệu về giao thức HTTP/HTTPS và cơ chế hoạt động của Web Server.
 
