@@ -22,7 +22,7 @@
 | **Lớp** | DK25TTC2 |
 | **Trường** | Trường Đại học Trà Vinh (TVU) |
 | **Môn học** | Lập trình Web / Phát triển Ứng dụng Web |
-| **Giảng viên hướng dẫn** | antonio86doan@gmail.com |
+| **Giảng viên hướng dẫn** | TS. Nguyễn Nhứt Lam |
 | **Thời gian thực hiện** | 22/06/2026 — 01/08/2026 |
 | **Công nghệ chính** | ASP.NET MVC 5, C#, SQL Server, Entity Framework, Bootstrap |
 
