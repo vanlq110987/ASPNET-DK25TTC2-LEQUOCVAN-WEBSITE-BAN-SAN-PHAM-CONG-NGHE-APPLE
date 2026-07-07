@@ -13,7 +13,7 @@
 ## 1. Nội dung công việc đã thực hiện
 
 ### 1.1 Khảo sát và Phân tích yêu cầu
-- Khảo sát thực tế quy trình vận hành của một cửa hàng sản phẩm công nghệ: quy trình tiếp nhận đơn hàng, quản lý kho, đăng bài viết trên trang bán sản phẩm. Đăng bài tin tức các chương trình khuyến mãi
+- Khảo sát thực tế quy trình vận hành của một cửa hàng sản phẩm công nghệ tương tự Apple: quy trình tiếp nhận đơn hàng, quản lý kho, đăng bài viết trên trang bán sản phẩm. Đăng bài tin tức các chương trình khuyến mãi
 - Phân tích và xác định **14 chức năng chính** chia làm hai nhóm:
   - **Phía Khách hàng (7 chức năng)**: Xem danh sách sản phẩm, Xem chi tiết sản phẩm, Bộ lọc sản phẩm theo Hãng/Nhu cầu, Quản lý Giỏ hàng, Đặt hàng trực tuyến, Xem lịch sử đơn hàng, Đọc tin tức về các chương trình khuyến mãi và Bình luận.
   - **Phía Quản trị Admin (7 chức năng)**: Quản lý Sản phẩm công nghệ Apple (iPhone, MacBook, iPad,...), Quản lý kênh phân phối sỉ, Quản lý Đơn hàng, Quản lý Tin tức thuộc các Chủ đề, Quản lý Tài khoản người dùng, Phân quyền vai trò quản trị.
@@ -61,7 +61,7 @@
 
 > **Ghi chú:**
 > Thiết kế này hỗ trợ đầy đủ **14 Use Case** của Khách hàng và Admin trong hệ thống Thương mại điện tử Apple.
-> Các bảng được thiết kế tối ưu cho SQL Server và tích hợp sẵn với ASP.NET Core Identity.
+> Các bảng được thiết kế tối ưu cho SQL Server và tích hợp sẵn với ASP.NET Core Identity. 
 
 ---
 
