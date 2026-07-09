@@ -1,10 +1,14 @@
 ﻿@model List<AppleShop.Models.ViewModels.UserRolesViewModel>
 @{
     ViewBag.Title = "Quản lý Tài khoản";
+    var currentUserId = User.Identity.GetUserId();
 }
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Quản lý Tài khoản người dùng</h1>
+    <a href="@Url.Action("Create")" class="btn btn-primary btn-sm">
+        <i class="fas fa-user-plus"></i> Thêm tài khoản
+    </a>
 </div>
 
 <div class="card shadow mb-4">
@@ -26,7 +30,7 @@
                         <th>Ngày tạo</th>
                         <th>Vai trò</th>
                         <th class="text-center">Trạng thái</th>
-                        <th class="text-center" style="width:160px">Thao tác</th>
+                        <th class="text-center" style="width:210px">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,17 +53,34 @@
                                 </span>
                             </td>
                             <td class="text-center">
-                                <a href="@Url.Action("EditRoles", new { id = u.UserId })" class="btn btn-sm btn-outline-primary" title="Phân quyền">
+                                <a href="@Url.Action("Edit", new { id = u.UserId })" class="btn btn-sm btn-outline-primary" title="Sửa thông tin">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="@Url.Action("EditRoles", new { id = u.UserId })" class="btn btn-sm btn-outline-info" title="Phân quyền">
                                     <i class="fas fa-user-shield"></i>
                                 </a>
-                                <form action="@Url.Action("ToggleLock", new { id = u.UserId })" method="post" class="d-inline"
-                                      onsubmit="return confirm('@(u.IsLockedOut ? "Mở khóa" : "Khóa") tài khoản @u.Email?');">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-sm @(u.IsLockedOut ? "btn-outline-success" : "btn-outline-danger")"
-                                            title="@(u.IsLockedOut ? "Mở khóa" : "Khóa tài khoản")">
-                                        <i class="fas @(u.IsLockedOut ? "fa-unlock" : "fa-lock")"></i>
-                                    </button>
-                                </form>
+                                @if (u.UserId != currentUserId)
+                                {
+                                    <form action="@Url.Action("ToggleLock", new { id = u.UserId })" method="post" class="d-inline"
+                                          onsubmit="return confirm('@(u.IsLockedOut ? "Mở khóa" : "Khóa") tài khoản @u.Email?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm @(u.IsLockedOut ? "btn-outline-success" : "btn-outline-warning")"
+                                                title="@(u.IsLockedOut ? "Mở khóa" : "Khóa tài khoản")">
+                                            <i class="fas @(u.IsLockedOut ? "fa-unlock" : "fa-lock")"></i>
+                                        </button>
+                                    </form>
+                                    <form action="@Url.Action("Delete", new { id = u.UserId })" method="post" class="d-inline"
+                                          onsubmit="return confirm('Xóa vĩnh viễn tài khoản @u.Email? Lịch sử đơn hàng liên quan vẫn được giữ.');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa tài khoản">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-info align-middle" title="Tài khoản bạn đang đăng nhập — không thể tự khóa/xóa">Bạn</span>
+                                }
                             </td>
                         </tr>
                     }

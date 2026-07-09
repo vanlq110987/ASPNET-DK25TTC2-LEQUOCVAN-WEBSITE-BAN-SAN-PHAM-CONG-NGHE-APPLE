@@ -1,0 +1,60 @@
+﻿@model AppleShop.Models.ViewModels.UserEditViewModel
+@{
+    ViewBag.Title = "Sửa tài khoản";
+}
+
+<h1 class="h3 mb-4 text-gray-800">Sửa tài khoản: @Model.Email</h1>
+
+<div class="card shadow mb-4" style="max-width:640px">
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(m => m.UserId)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.FullName)
+                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger small" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small" })
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(m => m.PhoneNumber)
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger small" })
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(m => m.Address)
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <hr />
+            <p class="font-weight-bold mb-2">Đổi mật khẩu <small class="text-muted font-weight-normal">(để trống nếu giữ nguyên)</small></p>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(m => m.NewPassword)
+                    @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "text-danger small" })
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(m => m.ConfirmNewPassword)
+                    @Html.PasswordFor(m => m.ConfirmNewPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmNewPassword, "", new { @class = "text-danger small" })
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Cập nhật</button>
+            <a href="@Url.Action("EditRoles", new { id = Model.UserId })" class="btn btn-outline-info">
+                <i class="fas fa-user-shield"></i> Phân quyền
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">Hủy</a>
+        }
+    </div>
+</div>
