@@ -15,6 +15,12 @@ GO
 USE AppleShopDB;
 GO
 
+/* Gán owner hợp lệ (sa) để SSMS cho phép tạo Database Diagrams (sơ đồ ERD).
+   Nếu thiếu bước này, SSMS báo lỗi "database does not have a valid owner"
+   khi mở node Database Diagrams. */
+ALTER AUTHORIZATION ON DATABASE::AppleShopDB TO sa;
+GO
+
 /* ==========================================================================
    PHẦN 1 — BẢNG ASP.NET IDENTITY (6 bảng)
    ========================================================================== */
@@ -494,4 +500,6 @@ GO
 
 PRINT N'>>> Khởi tạo AppleShopDB hoàn tất: 21 bảng (6 Identity + 15 nghiệp vụ) cùng dữ liệu mẫu.';
 PRINT N'>>> Tài khoản Admin/Customer sẽ được ứng dụng tự tạo khi chạy lần đầu (IdentitySeeder).';
+PRINT N'>>> Tạo sơ đồ ERD: Object Explorer → AppleShopDB → chuột phải "Database Diagrams"';
+PRINT N'>>> → Yes (cài diagram support) → New Database Diagram → Add toàn bộ 21 bảng → Save.';
 GO
