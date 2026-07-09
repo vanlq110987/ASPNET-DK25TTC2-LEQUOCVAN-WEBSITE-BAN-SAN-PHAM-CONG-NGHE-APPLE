@@ -56,9 +56,20 @@
                                 <a href="@Url.Action("Edit", new { id = u.UserId })" class="btn btn-sm btn-outline-primary" title="Sửa thông tin">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="@Url.Action("EditRoles", new { id = u.UserId })" class="btn btn-sm btn-outline-info" title="Phân quyền">
-                                    <i class="fas fa-user-shield"></i>
-                                </a>
+                                @if (u.UserId != currentUserId)
+                                {
+                                    <a href="@Url.Action("EditRoles", new { id = u.UserId })" class="btn btn-sm btn-outline-info" title="Phân quyền">
+                                        <i class="fas fa-user-shield"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-sm btn-outline-info" disabled
+                                            style="opacity:.35; cursor:not-allowed"
+                                            title="Không thể tự phân quyền — cần một Admin khác thực hiện">
+                                        <i class="fas fa-user-shield"></i>
+                                    </button>
+                                }
                                 @if (u.UserId != currentUserId)
                                 {
                                     <form action="@Url.Action("ToggleLock", new { id = u.UserId })" method="post" class="d-inline"
@@ -79,7 +90,17 @@
                                 }
                                 else
                                 {
-                                    <span class="badge badge-info align-middle" title="Tài khoản bạn đang đăng nhập — không thể tự khóa/xóa">Bạn</span>
+                                    <!-- Tài khoản đang đăng nhập: không thể tự khóa/xóa — nút bị mờ -->
+                                    <button type="button" class="btn btn-sm btn-outline-warning" disabled
+                                            style="opacity:.35; cursor:not-allowed"
+                                            title="Không thể tự khóa tài khoản đang đăng nhập">
+                                        <i class="fas fa-lock"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" disabled
+                                            style="opacity:.35; cursor:not-allowed"
+                                            title="Không thể tự xóa tài khoản đang đăng nhập">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 }
                             </td>
                         </tr>

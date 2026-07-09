@@ -51,9 +51,20 @@
             </div>
 
             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Cập nhật</button>
-            <a href="@Url.Action("EditRoles", new { id = Model.UserId })" class="btn btn-outline-info">
-                <i class="fas fa-user-shield"></i> Phân quyền
-            </a>
+            @if (Model.UserId != User.Identity.GetUserId())
+            {
+                <a href="@Url.Action("EditRoles", new { id = Model.UserId })" class="btn btn-outline-info">
+                    <i class="fas fa-user-shield"></i> Phân quyền
+                </a>
+            }
+            else
+            {
+                <button type="button" class="btn btn-outline-info" disabled
+                        style="opacity:.35; cursor:not-allowed"
+                        title="Không thể tự phân quyền — cần một Admin khác thực hiện">
+                    <i class="fas fa-user-shield"></i> Phân quyền
+                </button>
+            }
             <a href="@Url.Action("Index")" class="btn btn-outline-secondary">Hủy</a>
         }
     </div>

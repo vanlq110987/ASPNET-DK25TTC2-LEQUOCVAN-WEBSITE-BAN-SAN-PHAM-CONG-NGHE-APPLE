@@ -247,6 +247,13 @@ namespace AppleShop.Areas.Admin.Controllers
         // GET: /Admin/Account/EditRoles/{id}
         public ActionResult EditRoles(string id)
         {
+            // Không thể tự phân quyền — phải do một Admin khác thực hiện
+            if (id == User.Identity.GetUserId())
+            {
+                TempData["Error"] = "Bạn không thể tự phân quyền cho chính mình. Hãy nhờ một Admin khác thực hiện.";
+                return RedirectToAction("Index");
+            }
+
             var user = db.Users.Find(id);
             if (user == null) return HttpNotFound();
 
@@ -262,17 +269,17 @@ namespace AppleShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditRoles(string id, string[] roles)
         {
+            // Không thể tự phân quyền — phải do một Admin khác thực hiện
+            if (id == User.Identity.GetUserId())
+            {
+                TempData["Error"] = "Bạn không thể tự phân quyền cho chính mình. Hãy nhờ một Admin khác thực hiện.";
+                return RedirectToAction("Index");
+            }
+
             var user = db.Users.Find(id);
             if (user == null) return HttpNotFound();
 
             roles = roles ?? new string[0];
-
-            // Không cho tự thu hồi quyền Admin của chính mình
-            if (user.Id == User.Identity.GetUserId() && !roles.Contains(IdentitySeeder.AdminRole))
-            {
-                TempData["Error"] = "Bạn không thể tự thu hồi quyền Admin của chính mình.";
-                return RedirectToAction("EditRoles", new { id });
-            }
 
             var currentRoles = UserManager.GetRoles(user.Id).ToList();
 
