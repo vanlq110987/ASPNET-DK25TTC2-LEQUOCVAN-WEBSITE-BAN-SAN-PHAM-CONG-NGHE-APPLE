@@ -1,0 +1,74 @@
+@model AppleShop.Models.Product
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(m => m.ProductId)
+
+<div class="form-row">
+    <div class="form-group col-md-8">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger small" })
+    </div>
+    <div class="form-group col-md-4">
+        @Html.LabelFor(m => m.CategoryId)
+        @Html.DropDownListFor(m => m.CategoryId, (SelectList)ViewBag.Categories, new { @class = "form-control" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ShortDescription)
+    @Html.TextAreaFor(m => m.ShortDescription, new { @class = "form-control", rows = 2 })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Description)
+    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", id = "editor-description", rows = 6 })
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-4">
+        @Html.LabelFor(m => m.Price)
+        @Html.TextBoxFor(m => m.Price, "{0:0}", new { @class = "form-control", type = "number", min = "0" })
+        @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger small" })
+    </div>
+    <div class="form-group col-md-4">
+        @Html.LabelFor(m => m.SalePrice)
+        @Html.TextBoxFor(m => m.SalePrice, "{0:0}", new { @class = "form-control", type = "number", min = "0" })
+    </div>
+    <div class="form-group col-md-4">
+        @Html.LabelFor(m => m.Need)
+        @Html.DropDownListFor(m => m.Need,
+            new SelectList(new[] { "Học tập", "Văn phòng", "Đồ họa", "Gaming", "Cao cấp" }, Model.Need),
+            "— Chọn nhu cầu —", new { @class = "form-control" })
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <label>Ảnh đại diện (upload)</label>
+        <input type="file" name="imageFile" class="form-control-file" accept=".jpg,.jpeg,.png,.webp" />
+        <small class="text-muted">Để trống nếu dùng URL bên cạnh.</small>
+    </div>
+    <div class="form-group col-md-6">
+        @Html.LabelFor(m => m.ImageUrl)
+        @Html.TextBoxFor(m => m.ImageUrl, new { @class = "form-control", placeholder = "https://..." })
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ImageUrl))
+{
+    <div class="form-group">
+        <img src="@Model.ImageUrl" alt="Ảnh hiện tại" style="max-width:160px;border-radius:.5rem" />
+    </div>
+}
+
+<div class="form-row">
+    <div class="form-group col-md-3 form-check ml-3">
+        @Html.CheckBoxFor(m => m.IsFeatured, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.IsFeatured, new { @class = "form-check-label" })
+    </div>
+    <div class="form-group col-md-3 form-check">
+        @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.IsActive, new { @class = "form-check-label" })
+    </div>
+</div>

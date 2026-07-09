@@ -1,0 +1,174 @@
+@{
+    var controllerName = (string)ViewContext.RouteData.Values["controller"];
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewBag.Title != null ? ViewBag.Title + " — " : "")AppleShop Admin</title>
+
+    <!-- SB Admin 2 (StartBootstrap) + Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css" />
+</head>
+<body id="page-top">
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("Index", "Home", new { area = "Admin" })">
+                <div class="sidebar-brand-icon"><i class="fab fa-apple"></i></div>
+                <div class="sidebar-brand-text mx-2">AppleShop</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @(controllerName == "Home" ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("Index", "Home", new { area = "Admin" })">
+                    <i class="fas fa-fw fa-tachometer-alt"></i><span>Dashboard</span>
+                </a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Quản lý</div>
+            <li class="nav-item @(controllerName == "Product" ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("Index", "Product", new { area = "Admin" })">
+                    <i class="fas fa-fw fa-mobile-alt"></i><span>Sản phẩm</span>
+                </a>
+            </li>
+            <li class="nav-item @(controllerName == "Channel" ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("Index", "Channel", new { area = "Admin" })">
+                    <i class="fas fa-fw fa-store"></i><span>Kênh phân phối</span>
+                </a>
+            </li>
+            <li class="nav-item @(controllerName == "Order" ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("Index", "Order", new { area = "Admin" })">
+                    <i class="fas fa-fw fa-file-invoice-dollar"></i><span>Đơn hàng</span>
+                </a>
+            </li>
+            <li class="nav-item @(controllerName == "News" ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("Index", "News", new { area = "Admin" })">
+                    <i class="fas fa-fw fa-newspaper"></i><span>Tin tức</span>
+                </a>
+            </li>
+            <li class="nav-item @(controllerName == "Account" ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("Index", "Account", new { area = "Admin" })">
+                    <i class="fas fa-fw fa-users-cog"></i><span>Tài khoản</span>
+                </a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Index", "Home", new { area = "" })">
+                    <i class="fas fa-fw fa-globe"></i><span>Xem website</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Content -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="@Url.Action("Index", "Order", new { area = "Admin", status = (byte)0 })" id="alertsDropdown">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <span id="new-order-badge" class="badge badge-danger badge-counter d-none"></span>
+                            </a>
+                        </li>
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.GetUserName()</span>
+                                <i class="fas fa-user-circle fa-lg text-gray-400"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
+                                <a class="dropdown-item" href="@Url.Action("Index", "Home", new { area = "" })">
+                                    <i class="fas fa-globe fa-sm fa-fw mr-2 text-gray-400"></i> Xem website
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <form action="@Url.Action("LogOff", "Account", new { area = "" })" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Đăng xuất
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Page content -->
+                <div class="container-fluid">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show">
+                            @TempData["Success"]
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        </div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            @TempData["Error"]
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        </div>
+                    }
+
+                    @RenderBody()
+                </div>
+            </div>
+
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>© 2026 AppleShop — Lê Quốc Văn, DK25TTC2, Trường Đại học Trà Vinh</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Toast thông báo đơn hàng mới -->
+    <div id="order-toast" class="toast" role="alert" style="position:fixed; bottom:1rem; right:1rem; z-index:1080;" data-delay="8000">
+        <div class="toast-header bg-primary text-white">
+            <i class="fas fa-bell mr-2"></i>
+            <strong class="mr-auto">Đơn hàng mới</strong>
+            <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast">&times;</button>
+        </div>
+        <div class="toast-body">
+            Có <span id="toast-order-count">0</span> đơn hàng mới chưa xử lý.
+            <a href="@Url.Action("Index", "Order", new { area = "Admin", status = (byte)0 })">Xem ngay</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/js/sb-admin-2.min.js"></script>
+
+    <script>
+        // Polling thông báo đơn hàng mới (30 giây/lần)
+        (function () {
+            var lastCount = -1;
+            function poll() {
+                $.getJSON('@Url.Action("NewOrdersCount", "Home", new { area = "Admin" })', function (data) {
+                    var $badge = $('#new-order-badge');
+                    if (data.count > 0) {
+                        $badge.text(data.count > 9 ? '9+' : data.count).removeClass('d-none');
+                        if (lastCount >= 0 && data.count > lastCount) {
+                            $('#toast-order-count').text(data.count);
+                            $('#order-toast').toast('show');
+                        }
+                    } else {
+                        $badge.addClass('d-none');
+                    }
+                    lastCount = data.count;
+                });
+            }
+            poll();
+            setInterval(poll, 30000);
+        })();
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

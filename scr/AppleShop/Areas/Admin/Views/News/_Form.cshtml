@@ -1,0 +1,42 @@
+@model AppleShop.Models.NewsArticle
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(m => m.ArticleId)
+
+<div class="form-row">
+    <div class="form-group col-md-8">
+        @Html.LabelFor(m => m.Title)
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger small" })
+    </div>
+    <div class="form-group col-md-4">
+        @Html.LabelFor(m => m.NewsCategoryId)
+        @Html.DropDownListFor(m => m.NewsCategoryId, (SelectList)ViewBag.Categories, new { @class = "form-control" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Summary)
+    @Html.TextAreaFor(m => m.Summary, new { @class = "form-control", rows = 2 })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Content)
+    @Html.TextAreaFor(m => m.Content, new { @class = "form-control", id = "editor-content", rows = 10 })
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-8">
+        @Html.LabelFor(m => m.ThumbnailUrl)
+        @Html.TextBoxFor(m => m.ThumbnailUrl, new { @class = "form-control", placeholder = "https://..." })
+    </div>
+    <div class="form-group col-md-4">
+        @Html.LabelFor(m => m.AuthorName)
+        @Html.TextBoxFor(m => m.AuthorName, new { @class = "form-control", placeholder = "AppleShop" })
+    </div>
+</div>
+
+<div class="form-group form-check">
+    @Html.CheckBoxFor(m => m.IsPublished, new { @class = "form-check-input" })
+    @Html.LabelFor(m => m.IsPublished, new { @class = "form-check-label" })
+</div>

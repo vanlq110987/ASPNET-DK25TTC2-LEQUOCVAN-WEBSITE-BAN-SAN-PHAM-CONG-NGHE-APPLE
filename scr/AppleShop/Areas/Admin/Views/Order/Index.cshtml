@@ -1,0 +1,89 @@
+@model List<AppleShop.Models.Order>
+@{
+    ViewBag.Title = "Quản lý Đơn hàng";
+    byte? status = ViewBag.Status;
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
+    var statusTabs = new[]
+    {
+        new { Value = (byte?)null, Label = "Tất cả" },
+        new { Value = (byte?)0, Label = "Mới" },
+        new { Value = (byte?)1, Label = "Đang xử lý" },
+        new { Value = (byte?)2, Label = "Đã giao" },
+        new { Value = (byte?)3, Label = "Hủy" }
+    };
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Quản lý Đơn hàng</h1>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-wrap align-items-center">
+        <ul class="nav nav-pills mr-auto">
+            @foreach (var tab in statusTabs)
+            {
+                <li class="nav-item">
+                    <a class="nav-link py-1 px-3 @(status == tab.Value ? "active" : "")"
+                       href="@Url.Action("Index", new { status = tab.Value, q = ViewBag.Keyword })">@tab.Label</a>
+                </li>
+            }
+        </ul>
+        <form method="get" class="form-inline mt-2 mt-md-0">
+            <input type="hidden" name="status" value="@status" />
+            <input type="text" name="q" class="form-control form-control-sm mr-2"
+                   placeholder="Mã đơn / tên / SĐT..." value="@ViewBag.Keyword" />
+            <button type="submit" class="btn btn-sm btn-outline-primary"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Điện thoại</th>
+                        <th>Ngày đặt</th>
+                        <th class="text-right">Tổng tiền</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="7" class="text-center text-muted py-4">Không có đơn hàng nào.</td></tr>
+                    }
+                    @foreach (var o in Model)
+                    {
+                        <tr class="@(!o.IsRead ? "font-weight-bold" : "")">
+                            <td>@o.OrderCode @if (!o.IsRead) { <span class="badge badge-danger">mới</span> }</td>
+                            <td>@o.Customer.FullName</td>
+                            <td>@o.Customer.Phone</td>
+                            <td>@o.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="text-right">@string.Format("{0:N0} ₫", o.TotalAmount)</td>
+                            <td class="text-center"><span class="badge @o.StatusBadgeClass">@o.StatusText</span></td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Details", new { id = o.OrderId })" class="btn btn-sm btn-outline-primary">Chi tiết</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @if (totalPages > 1)
+    {
+        <div class="card-footer">
+            <ul class="pagination justify-content-center mb-0">
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == page ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { status, q = ViewBag.Keyword, page = i })">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>

@@ -1,0 +1,55 @@
+@model AppleShop.Models.NewsArticle
+@{
+    ViewBag.Title = Model.Title;
+    var related = (List<AppleShop.Models.NewsArticle>)ViewBag.RelatedArticles;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent px-0">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "News")">Tin tức</a></li>
+        <li class="breadcrumb-item active">@Model.NewsCategory.Name</li>
+    </ol>
+</nav>
+
+<article class="mx-auto" style="max-width:820px">
+    <span class="badge badge-info">@Model.NewsCategory.Name</span>
+    <h1 class="mt-2">@Model.Title</h1>
+    <p class="text-muted small">
+        <i class="far fa-user"></i> @(Model.AuthorName ?? "AppleShop")
+        · <i class="far fa-clock"></i> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+        · <i class="far fa-eye"></i> @Model.ViewCount lượt xem
+    </p>
+
+    @if (!string.IsNullOrEmpty(Model.Summary))
+    {
+        <p class="lead">@Model.Summary</p>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.ThumbnailUrl))
+    {
+        <img src="@Model.ThumbnailUrl" class="img-fluid rounded mb-4" alt="@Model.Title" />
+    }
+
+    <div class="news-content">
+        @Html.Raw(Model.Content)
+    </div>
+</article>
+
+@if (related.Any())
+{
+    <hr class="my-5" />
+    <section class="mx-auto" style="max-width:820px">
+        <h5 class="mb-3">Bài viết cùng chủ đề</h5>
+        <ul class="list-unstyled">
+            @foreach (var a in related)
+            {
+                <li class="mb-2">
+                    <i class="fas fa-angle-right text-muted"></i>
+                    <a href="@Url.RouteUrl("NewsDetail", new { slug = a.Slug })">@a.Title</a>
+                    <small class="text-muted">— @a.CreatedAt.ToString("dd/MM/yyyy")</small>
+                </li>
+            }
+        </ul>
+    </section>
+}

@@ -1,0 +1,114 @@
+@model List<AppleShop.Models.NewsArticle>
+@{
+    ViewBag.Title = "Quản lý Tin tức";
+    var categories = (List<AppleShop.Models.NewsCategory>)ViewBag.Categories;
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Quản lý Tin tức</h1>
+    <a href="@Url.Action("Create")" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Viết bài mới</a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <form method="get" class="form-inline">
+                    <select name="categoryId" class="form-control form-control-sm mr-2" onchange="this.form.submit()">
+                        <option value="">Tất cả chủ đề</option>
+                        @foreach (var c in categories)
+                        {
+                            <option value="@c.NewsCategoryId" @(ViewBag.CategoryId != null && (int)ViewBag.CategoryId == c.NewsCategoryId ? "selected" : "")>@c.Name</option>
+                        }
+                    </select>
+                </form>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Tiêu đề</th>
+                            <th>Chủ đề</th>
+                            <th>Ngày tạo</th>
+                            <th class="text-center">Xuất bản</th>
+                            <th class="text-center" style="width:120px">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr><td colspan="5" class="text-center text-muted py-4">Chưa có bài viết nào.</td></tr>
+                        }
+                        @foreach (var a in Model)
+                        {
+                            <tr>
+                                <td>@a.Title</td>
+                                <td><span class="badge badge-info">@a.NewsCategory.Name</span></td>
+                                <td>@a.CreatedAt.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    <span class="badge @(a.IsPublished ? "badge-success" : "badge-secondary")">
+                                        @(a.IsPublished ? "Đã đăng" : "Nháp")
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Edit", new { id = a.ArticleId })" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+                                    <form action="@Url.Action("Delete", new { id = a.ArticleId })" method="post" class="d-inline"
+                                          onsubmit="return confirm('Xóa bài viết này?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @if (totalPages > 1)
+            {
+                <div class="card-footer">
+                    <ul class="pagination justify-content-center mb-0">
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(i == page ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Index", new { categoryId = ViewBag.CategoryId, page = i })">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Chủ đề tin tức</h6></div>
+            <div class="card-body">
+                <ul class="list-group mb-3">
+                    @foreach (var c in categories)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-2">
+                            @c.Name
+                            <form action="@Url.Action("DeleteCategory", new { id = c.NewsCategoryId })" method="post"
+                                  onsubmit="return confirm('Xóa chủ đề @c.Name?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger py-0"><i class="fas fa-times"></i></button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+                @using (Html.BeginForm("CreateCategory", "News", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="input-group input-group-sm">
+                        <input type="text" name="name" class="form-control" placeholder="Tên chủ đề mới..." required />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

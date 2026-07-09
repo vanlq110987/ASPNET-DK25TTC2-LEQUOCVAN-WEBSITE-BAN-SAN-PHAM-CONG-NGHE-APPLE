@@ -1,0 +1,48 @@
+@model AppleShop.Models.Order
+@{
+    ViewBag.Title = "Đặt hàng thành công";
+}
+
+<div class="text-center py-4">
+    <i class="fas fa-check-circle text-success" style="font-size:4rem;"></i>
+    <h2 class="mt-3">Đặt hàng thành công!</h2>
+    <p class="lead">
+        Mã đơn hàng của bạn: <strong class="text-primary">@Model.OrderCode</strong>
+    </p>
+    <p class="text-muted">
+        Chúng tôi sẽ liên hệ với bạn qua số điện thoại <strong>@Model.Customer.Phone</strong> để xác nhận đơn hàng.
+    </p>
+</div>
+
+<div class="card mx-auto" style="max-width:640px">
+    <div class="card-header font-weight-bold">Chi tiết đơn hàng</div>
+    <ul class="list-group list-group-flush">
+        @foreach (var item in Model.Items)
+        {
+            <li class="list-group-item d-flex justify-content-between">
+                <div>
+                    @item.ProductName <span class="text-muted small">× @item.Quantity</span>
+                    <br /><small class="text-muted">@item.VariantDesc</small>
+                </div>
+                <span>@string.Format("{0:N0} ₫", item.LineTotal)</span>
+            </li>
+        }
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Tổng cộng</strong>
+            <strong class="text-danger">@string.Format("{0:N0} ₫", Model.TotalAmount)</strong>
+        </li>
+    </ul>
+    <div class="card-body">
+        <p class="mb-1"><strong>Người nhận:</strong> @Model.Customer.FullName</p>
+        <p class="mb-1"><strong>Địa chỉ:</strong> @Model.Customer.Address</p>
+        <p class="mb-0"><strong>Thanh toán:</strong> COD — khi nhận hàng</p>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="@Url.Action("Index", "Product")" class="btn btn-outline-secondary">Tiếp tục mua sắm</a>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a href="@Url.Action("History", "Order")" class="btn btn-primary">Xem lịch sử đơn hàng</a>
+    }
+</div>

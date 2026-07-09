@@ -1,0 +1,65 @@
+@model List<AppleShop.Models.NewsArticle>
+@{
+    ViewBag.Title = "Tin tức & Khuyến mãi";
+    var categories = (List<AppleShop.Models.NewsCategory>)ViewBag.Categories;
+    string currentCategory = ViewBag.CurrentCategory;
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
+}
+
+<h2 class="mb-4"><i class="far fa-newspaper"></i> Tin tức &amp; Khuyến mãi</h2>
+
+<div class="mb-4">
+    <a class="btn btn-sm @(string.IsNullOrEmpty(currentCategory) ? "btn-dark" : "btn-outline-dark")"
+       href="@Url.Action("Index", "News")">Tất cả</a>
+    @foreach (var c in categories)
+    {
+        <a class="btn btn-sm @(currentCategory == c.Slug ? "btn-dark" : "btn-outline-dark")"
+           href="@Url.Action("Index", "News", new { category = c.Slug })">@c.Name</a>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Chưa có bài viết nào trong chủ đề này.</div>
+}
+else
+{
+    <div class="row">
+        @foreach (var a in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card news-card h-100">
+                    <a href="@Url.RouteUrl("NewsDetail", new { slug = a.Slug })">
+                        <img src="@a.ThumbnailUrl" class="card-img-top" alt="@a.Title" loading="lazy" />
+                    </a>
+                    <div class="card-body d-flex flex-column">
+                        <span class="badge badge-info mb-2 align-self-start">@a.NewsCategory.Name</span>
+                        <h6 class="card-title">
+                            <a class="text-dark" href="@Url.RouteUrl("NewsDetail", new { slug = a.Slug })">@a.Title</a>
+                        </h6>
+                        <p class="card-text small text-muted">@a.Summary</p>
+                        <small class="text-muted mt-auto">
+                            <i class="far fa-clock"></i> @a.CreatedAt.ToString("dd/MM/yyyy")
+                            · <i class="far fa-eye"></i> @a.ViewCount lượt xem
+                        </small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    if (totalPages > 1)
+    {
+        <nav>
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == page ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { category = currentCategory, page = i })">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+}

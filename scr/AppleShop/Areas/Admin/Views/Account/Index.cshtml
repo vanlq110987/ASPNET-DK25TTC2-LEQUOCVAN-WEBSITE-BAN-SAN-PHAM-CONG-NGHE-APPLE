@@ -1,0 +1,70 @@
+@model List<AppleShop.Models.ViewModels.UserRolesViewModel>
+@{
+    ViewBag.Title = "Quản lý Tài khoản";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Quản lý Tài khoản người dùng</h1>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <form method="get" class="form-inline">
+            <input type="text" name="q" class="form-control form-control-sm mr-2"
+                   placeholder="Tìm email / họ tên..." value="@ViewBag.Keyword" />
+            <button type="submit" class="btn btn-sm btn-outline-primary"><i class="fas fa-search"></i> Tìm</button>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Email</th>
+                        <th>Họ tên</th>
+                        <th>Điện thoại</th>
+                        <th>Ngày tạo</th>
+                        <th>Vai trò</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th class="text-center" style="width:160px">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var u in Model)
+                    {
+                        <tr>
+                            <td>@u.Email</td>
+                            <td>@u.FullName</td>
+                            <td>@u.PhoneNumber</td>
+                            <td>@u.CreatedAt.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @foreach (var r in u.Roles)
+                                {
+                                    <span class="badge @(r == "Admin" ? "badge-danger" : "badge-primary")">@r</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <span class="badge @(u.IsLockedOut ? "badge-secondary" : "badge-success")">
+                                    @(u.IsLockedOut ? "Đã khóa" : "Hoạt động")
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("EditRoles", new { id = u.UserId })" class="btn btn-sm btn-outline-primary" title="Phân quyền">
+                                    <i class="fas fa-user-shield"></i>
+                                </a>
+                                <form action="@Url.Action("ToggleLock", new { id = u.UserId })" method="post" class="d-inline"
+                                      onsubmit="return confirm('@(u.IsLockedOut ? "Mở khóa" : "Khóa") tài khoản @u.Email?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm @(u.IsLockedOut ? "btn-outline-success" : "btn-outline-danger")"
+                                            title="@(u.IsLockedOut ? "Mở khóa" : "Khóa tài khoản")">
+                                        <i class="fas @(u.IsLockedOut ? "fa-unlock" : "fa-lock")"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

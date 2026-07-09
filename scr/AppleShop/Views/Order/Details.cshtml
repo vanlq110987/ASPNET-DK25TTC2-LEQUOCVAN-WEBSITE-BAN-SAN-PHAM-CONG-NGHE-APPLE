@@ -1,0 +1,63 @@
+@model AppleShop.Models.Order
+@{
+    ViewBag.Title = "Chi tiết đơn hàng " + Model.OrderCode;
+}
+
+<h2 class="mb-4">Đơn hàng <span class="text-primary">@Model.OrderCode</span>
+    <span class="badge @Model.StatusBadgeClass align-middle ml-2">@Model.StatusText</span>
+</h2>
+
+<div class="row">
+    <div class="col-lg-7 mb-4">
+        <div class="card">
+            <div class="card-header font-weight-bold">Sản phẩm</div>
+            <ul class="list-group list-group-flush">
+                @foreach (var item in Model.Items)
+                {
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div>
+                            @item.ProductName <span class="text-muted small">× @item.Quantity</span>
+                            <br /><small class="text-muted">@item.VariantDesc</small>
+                        </div>
+                        <span>@string.Format("{0:N0} ₫", item.LineTotal)</span>
+                    </li>
+                }
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Tổng cộng</strong>
+                    <strong class="text-danger">@string.Format("{0:N0} ₫", Model.TotalAmount)</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card mb-3">
+            <div class="card-header font-weight-bold">Thông tin nhận hàng</div>
+            <div class="card-body">
+                <p class="mb-1"><strong>Người nhận:</strong> @Model.Customer.FullName</p>
+                <p class="mb-1"><strong>Điện thoại:</strong> @Model.Customer.Phone</p>
+                <p class="mb-1"><strong>Địa chỉ:</strong> @Model.Customer.Address</p>
+                <p class="mb-0"><strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+                @if (!string.IsNullOrEmpty(Model.Note))
+                {
+                    <p class="mb-0 mt-1"><strong>Ghi chú:</strong> @Model.Note</p>
+                }
+            </div>
+        </div>
+        @if (Model.Payments != null && Model.Payments.Any())
+        {
+            var payment = Model.Payments.First();
+            <div class="card">
+                <div class="card-header font-weight-bold">Thanh toán</div>
+                <div class="card-body">
+                    <p class="mb-1"><strong>Phương thức:</strong> @payment.Method</p>
+                    <p class="mb-0">
+                        <strong>Trạng thái:</strong>
+                        @(payment.Status == AppleShop.Models.PaymentStatus.Paid ? "Đã thanh toán" : "Chưa thanh toán")
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<a href="@Url.Action("History")" class="btn btn-outline-secondary"><i class="fas fa-chevron-left"></i> Quay lại</a>

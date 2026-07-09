@@ -1,0 +1,106 @@
+@model List<AppleShop.Models.Product>
+@{
+    ViewBag.Title = "Quản lý Sản phẩm";
+    var categories = (List<AppleShop.Models.Category>)ViewBag.Categories;
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Quản lý Sản phẩm</h1>
+    <a href="@Url.Action("Create")" class="btn btn-primary btn-sm">
+        <i class="fas fa-plus"></i> Thêm sản phẩm
+    </a>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <form method="get" class="form-inline">
+            <input type="text" name="q" class="form-control form-control-sm mr-2" placeholder="Tìm theo tên..." value="@ViewBag.Keyword" />
+            <select name="categoryId" class="form-control form-control-sm mr-2">
+                <option value="">Tất cả danh mục</option>
+                @foreach (var c in categories)
+                {
+                    <option value="@c.CategoryId" @(ViewBag.CategoryId != null && (int)ViewBag.CategoryId == c.CategoryId ? "selected" : "")>@c.Name</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-sm btn-outline-primary"><i class="fas fa-search"></i> Tìm</button>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width:72px">Ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th class="text-right">Giá</th>
+                        <th class="text-right">Giá KM</th>
+                        <th class="text-center">Nổi bật</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th class="text-center" style="width:200px">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="8" class="text-center text-muted py-4">Không có sản phẩm nào.</td></tr>
+                    }
+                    @foreach (var p in Model)
+                    {
+                        <tr class="@(p.IsActive ? "" : "table-secondary")">
+                            <td><img src="@p.ImageUrl" alt="@p.Name" style="width:56px;height:56px;object-fit:cover;border-radius:.35rem" /></td>
+                            <td>
+                                @p.Name
+                                <br /><small class="text-muted">@p.Slug</small>
+                            </td>
+                            <td>@p.Category.Name</td>
+                            <td class="text-right">@string.Format("{0:N0}", p.Price)</td>
+                            <td class="text-right">@(p.SalePrice.HasValue ? string.Format("{0:N0}", p.SalePrice.Value) : "—")</td>
+                            <td class="text-center">
+                                @if (p.IsFeatured) { <i class="fas fa-star text-warning"></i> }
+                            </td>
+                            <td class="text-center">
+                                <span class="badge @(p.IsActive ? "badge-success" : "badge-secondary")">
+                                    @(p.IsActive ? "Đang bán" : "Ngừng bán")
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Edit", new { id = p.ProductId })" class="btn btn-sm btn-outline-primary" title="Sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="@Url.Action("ToggleActive", new { id = p.ProductId })" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-warning" title="@(p.IsActive ? "Xóa mềm (ngừng bán)" : "Mở bán lại")">
+                                        <i class="fas @(p.IsActive ? "fa-eye-slash" : "fa-eye")"></i>
+                                    </button>
+                                </form>
+                                <form action="@Url.Action("Delete", new { id = p.ProductId })" method="post" class="d-inline"
+                                      onsubmit="return confirm('Xóa vĩnh viễn sản phẩm này? Hành động không thể hoàn tác.');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa vĩnh viễn">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @if (totalPages > 1)
+    {
+        <div class="card-footer">
+            <ul class="pagination justify-content-center mb-0">
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == page ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { q = ViewBag.Keyword, categoryId = ViewBag.CategoryId, page = i })">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>

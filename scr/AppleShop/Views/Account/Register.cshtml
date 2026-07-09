@@ -1,0 +1,51 @@
+@model AppleShop.Models.ViewModels.RegisterViewModel
+@{
+    ViewBag.Title = "Đăng ký tài khoản";
+}
+
+<div class="mx-auto" style="max-width:480px">
+    <div class="card">
+        <div class="card-body p-4">
+            <h3 class="text-center mb-4"><i class="fab fa-apple"></i> Đăng ký tài khoản</h3>
+
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FullName)
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger small" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "email@example.com" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PhoneNumber)
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger small" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger small" })
+                    <small class="text-muted">Tối thiểu 8 ký tự, gồm chữ hoa, chữ thường và số.</small>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger small" })
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Đăng ký</button>
+            }
+
+            <hr />
+            <p class="text-center small mb-0">
+                Đã có tài khoản? <a href="@Url.Action("Login")">Đăng nhập</a>
+            </p>
+        </div>
+    </div>
+</div>

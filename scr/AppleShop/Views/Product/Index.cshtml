@@ -1,0 +1,131 @@
+@model AppleShop.Models.ViewModels.ProductListViewModel
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+
+<h2 class="mb-4">Sản phẩm Apple</h2>
+
+<div class="row">
+    <!-- Bộ lọc -->
+    <div class="col-lg-3 filter-sidebar mb-4">
+        <form method="get" action="@Url.Action("Index", "Product")">
+            <input type="hidden" name="q" value="@Model.Keyword" />
+            <div class="card mb-3">
+                <div class="card-header font-weight-bold">Danh mục</div>
+                <div class="card-body py-2">
+                    <div class="custom-control custom-radio mb-1">
+                        <input type="radio" id="cat-all" name="category" value="" class="custom-control-input" @(string.IsNullOrEmpty(Model.CategorySlug) ? "checked" : "") />
+                        <label class="custom-control-label" for="cat-all">Tất cả</label>
+                    </div>
+                    @foreach (var c in Model.Categories)
+                    {
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" id="cat-@c.CategoryId" name="category" value="@c.Slug" class="custom-control-input" @(Model.CategorySlug == c.Slug ? "checked" : "") />
+                            <label class="custom-control-label" for="cat-@c.CategoryId">@c.Name</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header font-weight-bold">Kênh phân phối</div>
+                <div class="card-body py-2">
+                    <select name="channelId" class="form-control form-control-sm">
+                        <option value="">Tất cả kênh</option>
+                        @foreach (var ch in Model.Channels)
+                        {
+                            <option value="@ch.ChannelId" @(Model.ChannelId == ch.ChannelId ? "selected" : "")>@ch.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header font-weight-bold">Nhu cầu sử dụng</div>
+                <div class="card-body py-2">
+                    <select name="need" class="form-control form-control-sm">
+                        <option value="">Tất cả nhu cầu</option>
+                        @foreach (var n in Model.Needs)
+                        {
+                            <option value="@n" @(Model.Need == n ? "selected" : "")>@n</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header font-weight-bold">Khoảng giá (₫)</div>
+                <div class="card-body py-2">
+                    <div class="form-row">
+                        <div class="col">
+                            <input type="number" name="minPrice" class="form-control form-control-sm" placeholder="Từ" value="@(Model.MinPrice.HasValue ? Model.MinPrice.Value.ToString("0") : "")" min="0" />
+                        </div>
+                        <div class="col">
+                            <input type="number" name="maxPrice" class="form-control form-control-sm" placeholder="Đến" value="@(Model.MaxPrice.HasValue ? Model.MaxPrice.Value.ToString("0") : "")" min="0" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-dark btn-block">
+                <i class="fas fa-filter"></i> Lọc sản phẩm
+            </button>
+            <a href="@Url.Action("Index", "Product")" class="btn btn-outline-secondary btn-block btn-sm">Xóa bộ lọc</a>
+        </form>
+    </div>
+
+    <!-- Danh sách -->
+    <div class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted small">Tìm thấy <strong>@Model.TotalItems</strong> sản phẩm</span>
+            <form method="get" class="form-inline">
+                <input type="hidden" name="category" value="@Model.CategorySlug" />
+                <input type="hidden" name="channelId" value="@Model.ChannelId" />
+                <input type="hidden" name="need" value="@Model.Need" />
+                <input type="hidden" name="minPrice" value="@Model.MinPrice" />
+                <input type="hidden" name="maxPrice" value="@Model.MaxPrice" />
+                <input type="hidden" name="q" value="@Model.Keyword" />
+                <label class="small mr-2">Sắp xếp:</label>
+                <select name="sort" class="form-control form-control-sm" onchange="this.form.submit()">
+                    <option value="" @(string.IsNullOrEmpty(Model.Sort) ? "selected" : "")>Mới nhất</option>
+                    <option value="price-asc" @(Model.Sort == "price-asc" ? "selected" : "")>Giá tăng dần</option>
+                    <option value="price-desc" @(Model.Sort == "price-desc" ? "selected" : "")>Giá giảm dần</option>
+                    <option value="popular" @(Model.Sort == "popular" ? "selected" : "")>Xem nhiều</option>
+                </select>
+            </form>
+        </div>
+
+        @if (!Model.Products.Any())
+        {
+            <div class="alert alert-info">Không tìm thấy sản phẩm phù hợp với bộ lọc.</div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var p in Model.Products)
+                {
+                    <div class="col-6 col-md-4 mb-4">
+                        @Html.Partial("_ProductCard", p)
+                    </div>
+                }
+            </div>
+
+            if (Model.TotalPages > 1)
+            {
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.Page ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Index", new {
+                                       category = Model.CategorySlug, channelId = Model.ChannelId,
+                                       need = Model.Need, minPrice = Model.MinPrice, maxPrice = Model.MaxPrice,
+                                       q = Model.Keyword, sort = Model.Sort, page = i })">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        }
+    </div>
+</div>

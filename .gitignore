@@ -83,9 +83,10 @@ publish/
 # -----------------------------------------------
 # Upload folder — chứa ảnh sản phẩm, không track
 # -----------------------------------------------
-Content/uploads/
-Content/images/products/
-Scripts/uploads/
+**/Content/uploads/*
+!**/Content/uploads/.gitkeep
+**/Content/images/products/
+**/Scripts/uploads/
 
 # -----------------------------------------------
 # Database files — không commit file .mdf / .sql chứa dữ liệu nhạy cảm
@@ -126,6 +127,11 @@ desktop.ini
 # -----------------------------------------------
 .idea/
 *.sln.iml
+
+# -----------------------------------------------
+# Claude Code — cấu hình cục bộ
+# -----------------------------------------------
+.claude/
 
 # -----------------------------------------------
 # Node / npm (nếu dùng task runner)

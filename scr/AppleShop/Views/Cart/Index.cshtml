@@ -1,0 +1,79 @@
+@model List<AppleShop.Models.ViewModels.SessionCartItem>
+@{
+    ViewBag.Title = "Giỏ hàng";
+}
+
+<h2 class="mb-4"><i class="fas fa-shopping-cart"></i> Giỏ hàng của bạn</h2>
+
+@if (TempData["CartMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["CartMessage"]</div>
+}
+
+<div id="cart-table-wrap">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            Giỏ hàng của bạn đang trống.
+            <a href="@Url.Action("Index", "Product")">Tiếp tục mua sắm</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Phiên bản</th>
+                        <th class="text-right">Đơn giá</th>
+                        <th class="text-center" style="width:110px">Số lượng</th>
+                        <th class="text-right">Thành tiền</th>
+                        <th style="width:48px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@item.ImageUrl" class="cart-thumb mr-2" alt="@item.ProductName" />
+                                <a href="@Url.RouteUrl("ProductDetail", new { slug = item.ProductSlug })">@item.ProductName</a>
+                            </td>
+                            <td class="small text-muted">@item.VariantDesc</td>
+                            <td class="text-right">@string.Format("{0:N0} ₫", item.UnitPrice)</td>
+                            <td class="text-center">
+                                <input type="number" min="1" max="99" value="@item.Quantity"
+                                       class="form-control form-control-sm qty-input mx-auto"
+                                       data-variant-id="@item.VariantId" />
+                            </td>
+                            <td class="text-right line-total">@string.Format("{0:N0} ₫", item.LineTotal)</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-remove-item"
+                                        data-variant-id="@item.VariantId" title="Xóa">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" class="text-right">Tổng cộng:</th>
+                        <th class="text-right text-danger h5" id="cart-total">@string.Format("{0:N0} ₫", Model.Sum(i => i.LineTotal))</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="@Url.Action("Index", "Product")" class="btn btn-outline-secondary">
+                <i class="fas fa-chevron-left"></i> Tiếp tục mua sắm
+            </a>
+            <a href="@Url.Action("Checkout", "Order")" class="btn btn-primary btn-lg">
+                Tiến hành đặt hàng <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    }
+</div>

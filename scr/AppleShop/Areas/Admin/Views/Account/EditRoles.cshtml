@@ -1,0 +1,44 @@
+@model List<string>
+@{
+    ViewBag.Title = "Phân quyền";
+    var user = (AppleShop.Models.ApplicationUser)ViewBag.User;
+    var allRoles = (List<string>)ViewBag.AllRoles;
+}
+
+<h1 class="h3 mb-4 text-gray-800">Phân quyền: @user.Email</h1>
+
+<div class="card shadow mb-4" style="max-width:560px">
+    <div class="card-body">
+        <p class="mb-3">
+            <strong>Họ tên:</strong> @user.FullName<br />
+            <strong>Email:</strong> @user.Email
+        </p>
+
+        @using (Html.BeginForm("EditRoles", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@user.Id" />
+
+            <div class="form-group">
+                <label class="font-weight-bold">Vai trò</label>
+                @foreach (var role in allRoles)
+                {
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="role-@role"
+                               name="roles" value="@role" @(Model.Contains(role) ? "checked" : "") />
+                        <label class="custom-control-label" for="role-@role">
+                            @role
+                            @if (role == "Admin")
+                            {
+                                <small class="text-muted">— toàn quyền quản trị hệ thống</small>
+                            }
+                        </label>
+                    </div>
+                }
+            </div>
+
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Lưu vai trò</button>
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary">Quay lại</a>
+        }
+    </div>
+</div>

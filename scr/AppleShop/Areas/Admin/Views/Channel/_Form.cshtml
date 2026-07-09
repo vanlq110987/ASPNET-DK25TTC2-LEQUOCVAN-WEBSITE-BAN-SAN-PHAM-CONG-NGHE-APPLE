@@ -1,0 +1,28 @@
+@model AppleShop.Models.DistributionChannel
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(m => m.ChannelId)
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Name)
+    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger small" })
+</div>
+<div class="form-row">
+    <div class="form-group col-md-6">
+        @Html.LabelFor(m => m.Website)
+        @Html.TextBoxFor(m => m.Website, new { @class = "form-control", placeholder = "https://..." })
+    </div>
+    <div class="form-group col-md-6">
+        @Html.LabelFor(m => m.Hotline)
+        @Html.TextBoxFor(m => m.Hotline, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Address)
+    @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+</div>
+<div class="form-group form-check">
+    @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+    @Html.LabelFor(m => m.IsActive, new { @class = "form-check-label" })
+</div>
