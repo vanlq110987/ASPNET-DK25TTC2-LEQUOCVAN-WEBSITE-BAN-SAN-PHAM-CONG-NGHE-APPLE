@@ -13,13 +13,15 @@ namespace AppleShop
             routes.MapRoute(
                 name: "ProductDetail",
                 url: "san-pham/{slug}",
-                defaults: new { controller = "Product", action = "Detail" });
+                defaults: new { controller = "Product", action = "Detail" },
+                namespaces: new[] { "AppleShop.Controllers" });
 
             // URL thân thiện: /tin-tuc/{slug}
             routes.MapRoute(
                 name: "NewsDetail",
                 url: "tin-tuc/{slug}",
-                defaults: new { controller = "News", action = "Detail" });
+                defaults: new { controller = "News", action = "Detail" },
+                namespaces: new[] { "AppleShop.Controllers" });
 
             routes.MapRoute(
                 name: "Default",
