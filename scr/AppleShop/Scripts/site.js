@@ -1,4 +1,4 @@
-// ===== AppleShop — JS phía Khách hàng =====
+﻿// ===== AppleShop — JS phía Khách hàng =====
 // Cập nhật giỏ hàng bằng AJAX: đổi số lượng / xóa dòng không reload trang.
 $(function () {
 
