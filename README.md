@@ -52,6 +52,90 @@ Hệ thống cung cấp đầy đủ hai phân hệ:
 | **AJAX** | jQuery AJAX / `$.post()` — cập nhật giỏ hàng không reload trang |
 | **Môi trường phát triển** | Visual Studio 2019/2022, IIS Express |
 
+> ⚠️ **Lưu ý:** Bootstrap, jQuery, Font Awesome, SB Admin 2, CKEditor và Chart.js được nạp qua **CDN** — máy chạy demo cần có kết nối Internet.
+
+---
+
+## 📁 Cấu trúc thư mục repository
+
+```
+ASPNET-DK25TTC2-LEQUOCVAN-WEBSITE-BAN-SAN-PHAM-CONG-NGHE-APPLE/
+│
+├── scr/                                ← Mã nguồn + CSDL
+│   ├── AppleShopDB_Script.sql          ← Script tạo CSDL (21 bảng + dữ liệu mẫu)
+│   └── AppleShop/                      ← Dự án ASP.NET MVC 5
+│       ├── AppleShop.sln               ← Solution mở bằng Visual Studio
+│       ├── AppleShop.csproj
+│       ├── Web.config                  ← Connection string, cấu hình EF/Identity
+│       ├── Global.asax / Global.asax.cs
+│       ├── Startup.cs                  ← OWIN Startup
+│       │
+│       ├── App_Start/
+│       │   ├── BundleConfig.cs         ← Bundle CSS/JS tự viết
+│       │   ├── FilterConfig.cs
+│       │   ├── IdentityConfig.cs       ← UserManager, RoleManager + IdentitySeeder
+│       │   ├── RouteConfig.cs          ← Routing (/san-pham/{slug}, /tin-tuc/{slug})
+│       │   └── Startup.Auth.cs         ← Cấu hình OWIN Cookie Authentication
+│       │
+│       ├── Areas/Admin/                ← Khu vực quản trị (SB Admin 2)
+│       │   ├── AdminAreaRegistration.cs
+│       │   ├── Controllers/
+│       │   │   ├── AdminControllerBase.cs   ← [Authorize(Roles="Admin")]
+│       │   │   ├── HomeController.cs        ← Dashboard + polling đơn mới
+│       │   │   ├── ProductController.cs     ← CRUD sản phẩm, upload ảnh, xóa mềm
+│       │   │   ├── ChannelController.cs     ← CRUD kênh phân phối (kiểm tra FK)
+│       │   │   ├── OrderController.cs       ← Lọc, xem, cập nhật trạng thái đơn
+│       │   │   ├── NewsController.cs        ← CRUD tin tức + chủ đề (CKEditor)
+│       │   │   └── AccountController.cs     ← CRUD tài khoản, khóa/mở, phân quyền Role
+│       │   └── Views/ (Home, Product, Channel, Order, News, Account, Shared/_LayoutAdmin.cshtml)
+│       │
+│       ├── Controllers/                ← Controllers phía Khách hàng
+│       │   ├── HomeController.cs
+│       │   ├── ProductController.cs    ← Danh sách + bộ lọc + chi tiết + bình luận
+│       │   ├── CartController.cs       ← Giỏ hàng Session + AJAX JsonResult
+│       │   ├── OrderController.cs      ← Checkout (transaction), History
+│       │   ├── NewsController.cs
+│       │   └── AccountController.cs    ← Đăng ký / Đăng nhập (Identity)
+│       │
+│       ├── Models/                     ← 15 entity nghiệp vụ + IdentityModels
+│       │   ├── IdentityModels.cs       ← ApplicationUser + ApplicationDbContext
+│       │   ├── Category.cs, Product.cs, ProductVariant.cs, ProductImage.cs
+│       │   ├── DistributionChannel.cs, Inventory.cs
+│       │   ├── Cart.cs, CartItem.cs, Customer.cs
+│       │   ├── Order.cs, OrderItem.cs, Payment.cs
+│       │   ├── ProductReview.cs, NewsCategory.cs, NewsArticle.cs
+│       │   └── ViewModels/             ← LoginVM, RegisterVM, CheckoutVM, DashboardVM,...
+│       │
+│       ├── Helpers/SlugHelper.cs       ← Tạo slug an toàn từ tiếng Việt
+│       ├── Views/                      ← Views phía Khách hàng (Bootstrap 4)
+│       ├── Content/Site.css            ← CSS tùy biến + thư mục uploads/
+│       └── Scripts/site.js             ← AJAX giỏ hàng
+│
+├── soft/                               ← Bộ cài phần mềm cần thiết
+│   ├── README.md                       ← Hướng dẫn thứ tự cài đặt
+│   ├── vs_community_2022_setup.exe     ← Visual Studio 2022 Community (bootstrapper)
+│   ├── SQL2022-Express_setup.exe       ← SQL Server 2022 Express
+│   └── download-offline-installers.ps1 ← Script tải SSMS + .NET 4.8 Dev Pack (offline)
+│
+├── Thesis/                             ← Tài liệu Đồ án
+│   ├── doc/                            ← Tài liệu dạng .DOC (báo cáo, bìa)
+│   ├── pdf/                            ← Tài liệu dạng .PDF
+│   ├── html/                           ← Tài liệu dạng web
+│   ├── abs/                            ← Báo cáo thuyết trình (.PPT, .AVI, ...)
+│   └── refs/                           ← Tài liệu tham khảo
+│
+├── Progress_Report/                    ← Báo cáo tiến độ hàng tuần (đặc tả yêu cầu)
+│   ├── Tuan_1.md   ← Nghiên cứu lý thuyết
+│   ├── Tuan_2.md   ← Phân tích thiết kế + ERD 21 bảng
+│   ├── Tuan_3.md   ← Chức năng phía Khách hàng
+│   ├── Tuan_4.md   ← Chức năng phía Admin
+│   └── Tuan_5.md   ← Kiểm thử & hoàn thiện
+│
+├── .gitignore
+├── README.md
+└── README.ORG.md                       ← (file này)
+```
+
 ---
 
 ## 📚 Tài liệu tham khảo
