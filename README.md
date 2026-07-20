@@ -135,8 +135,7 @@ ASPNET-DK25TTC2-LEQUOCVAN-WEBSITE-BAN-SAN-PHAM-CONG-NGHE-APPLE/
 │   └── Tuan_5.md   ← Kiểm thử & hoàn thiện
 │
 ├── .gitignore
-├── README.md
-└── README.ORG.md                       ← (file này)
+└── README.md                            ← (file này)
 ```
 
 ---
@@ -355,6 +354,8 @@ Kiểm thử hộp đen (Black-box Testing) trên môi trường **Localhost (II
 
 | Ngày | Nội dung |
 |---|---|
+| 20/07/2026 | Hoàn thành **Tuần 5**: kiểm thử hộp đen 11/11 test case, viết Kết luận & Hướng phát triển, hoàn thiện báo cáo và slide thuyết trình (xem `Progress_Report/Tuan_5.md`) |
+| 20/07/2026 | Dọn dẹp tài liệu: gộp nội dung `README.ORG.md` vào `README.md` rồi xóa file trùng lặp |
 | 09/07/2026 | **Quản lý tài khoản nâng cao**: Admin thêm/sửa/xóa tài khoản người dùng, đổi mật khẩu, chọn vai trò khi tạo; xóa tài khoản vẫn giữ lịch sử đơn hàng (gỡ liên kết UserId) |
 | 09/07/2026 | **Bảo vệ tài khoản đang đăng nhập**: nút Khóa / Xóa / Phân quyền của chính mình bị mờ (disabled) trên giao diện và chặn cả phía server; không cho xóa Admin cuối cùng |
 | 09/07/2026 | Fix routing: thêm `namespaces` cho route `/san-pham/{slug}`, `/tin-tuc/{slug}` (hết lỗi trùng tên ProductController giữa 2 khu vực) |
